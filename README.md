@@ -3,4 +3,5 @@
 ## Developers:
 
 Cauã Adomaitis @adomaitisc
+
 Nicolas Alonso @alonsofroelingnatwit
