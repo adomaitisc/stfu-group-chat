@@ -1,7 +1,9 @@
 const Explore = () => {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <h1 className="text-4xl font-bold">Explore</h1>
+    <div className="">
+      <h1>Search</h1>
+      <h1>Trending Groups</h1>
+      <h1>From your Friends</h1>
     </div>
   );
 };
