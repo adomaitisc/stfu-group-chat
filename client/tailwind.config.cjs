@@ -2,7 +2,9 @@
 module.exports = {
   content: ["./inde.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    fontFamily: {
+      display: ["Poppins", "sans-serif"],
+    },
   },
   plugins: [],
 };
