@@ -3,7 +3,7 @@ import Trending from "./Trending";
 
 const Explore = () => {
   return (
-    <div className="w-full flex flex-col gap-y-4">
+    <div className="w-full">
       <Search />
       <Trending />
     </div>

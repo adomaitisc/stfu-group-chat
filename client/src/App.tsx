@@ -7,9 +7,9 @@ import Profile from "./Profile";
 const App = () => {
   return (
     <BrowserRouter>
-      <div className="font-display w-[100vw] h-[100vh] overflow-hidden bg-zinc-900 flex flex-col justify-start items-center">
+      <div className="font-display w-[100vw] h-[100vh] overflow-hidden bg-black flex flex-col justify-start items-center">
         <Navbar />
-        <div className="w-3/4 max-w-5xl h-full bg-zinc-800 mb-20 mt-8 rounded-[3rem] p-12 flex flex-col items-start justify-start text-white font-medium">
+        <div className="w-full max-w-4xl h-full bg-stone-800 mb-20 mt-8 rounded-[3rem] p-12 flex flex-col items-start justify-start text-white font-medium">
           <Routes>
             <Route path="/" element={<Home />}></Route>
             <Route path="/explore" element={<Explore />}></Route>

@@ -1,8 +1,8 @@
-const ExploreGroups = () => {
+const YourGroups = () => {
   const dummyData = [
     {
       id: 1,
-      name: "Super Long Group",
+      name: "Mars Rover 2022",
       members: 10,
       group_image: "https://source.unsplash.com/random/?mars",
     },
@@ -27,22 +27,22 @@ const ExploreGroups = () => {
   ];
 
   return (
-    <div className="mt-4 w-full grid-cols-3 grid gap-y-2 gap-x-1">
+    <div className="mt-4 w-full flex flex-col gap-y-2">
       {dummyData.map((group) => (
         <div
           key={group.id}
-          className="w-full rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2 truncate"
+          className="w-full rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2"
         >
           <img
             src={group.group_image}
             alt="group image"
-            className="w-16 h-16 rounded-lg"
+            className="w-12 h-12 rounded-lg"
           />
-          <div className="flex flex-col justify-center items-start ml-4 overflow-ellipsis">
-            <h1 className="text-base font-normal text-stone-300 truncate">
+          <div className="flex flex-col justify-center items-start ml-3">
+            <h1 className="text-sm font-normal text-stone-300 truncate">
               {group.name}
             </h1>
-            <h1 className="text-base font-normal text-stone-400">
+            <h1 className="text-sm font-normal text-stone-400">
               {group.members} Members
             </h1>
           </div>
@@ -52,4 +52,4 @@ const ExploreGroups = () => {
   );
 };
 
-export default ExploreGroups;
+export default YourGroups;
