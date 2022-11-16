@@ -1,9 +1,11 @@
+import Search from "./Search";
+import Trending from "./Trending";
+
 const Explore = () => {
   return (
-    <div className="">
-      <h1>Search</h1>
-      <h1>Trending Groups</h1>
-      <h1>From your Friends</h1>
+    <div className="w-full flex flex-col gap-y-4">
+      <Search />
+      <Trending />
     </div>
   );
 };
