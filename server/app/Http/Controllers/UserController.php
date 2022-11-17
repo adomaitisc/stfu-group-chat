@@ -13,9 +13,14 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
+        //
+    }
+
+    public function getUser()
+    {
+        return 'Authed user';
     }
 
     /**
@@ -51,7 +56,8 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //check if the token is valid
+
     }
 
     /**

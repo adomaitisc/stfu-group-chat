@@ -14,10 +14,10 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        return json_encode([
             'name' => $this->name,
             'email' => $this->email,
             'created_at' => $this->created_at,
-        ];
+        ]);
     }
 }

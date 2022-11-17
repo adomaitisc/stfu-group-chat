@@ -44,6 +44,8 @@ class AuthController extends Controller
                 'password' => Hash::make($request->password)
             ]);
 
+            echo $user;
+
             return response()->json([
                 'status' => true,
                 'message' => 'User Created Successfully',
@@ -87,7 +89,7 @@ class AuthController extends Controller
             return response()->json([
                 'status' => true,
                 'message' => 'User Logged In Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
+                'token' => $user->createToken("remember_token")->plainTextToken
             ], 200);
 
         }
