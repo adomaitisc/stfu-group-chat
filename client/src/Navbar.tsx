@@ -11,6 +11,18 @@ const Navbar = () => {
               }
             : {}
         }
+        to="/join"
+      >
+        Join
+      </NavLink>
+      <NavLink
+        style={({ isActive }) =>
+          isActive
+            ? {
+                color: "rgb(161 161 170)",
+              }
+            : {}
+        }
         to="/explore"
       >
         Explore
