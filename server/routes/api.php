@@ -21,6 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::apiResource('group', GroupController::class);
+Route::put('group/{group}/member-added', [GroupController::class, 'updateMemberAdded']);
+Route::put('group/{group}/member-removed', [GroupController::class, 'updateMemberRemoved']);
 
 Route::post('auth/register', [AuthController::class, 'createUser']);
 Route::post('auth/login', [AuthController::class, 'loginUser']);
