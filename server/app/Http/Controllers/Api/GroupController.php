@@ -22,6 +22,16 @@ class GroupController extends Controller
         ]);
     }
 
+    public function allGroupsOfUser(Request $request)
+    {
+        $user = $request->user();
+        $groups = $user->groups()->get();
+        return response()->json([
+            "status" => "success",
+            "data" => $groups
+        ]);
+    }
+
     /**
      * Store a newly created resource in storage.
      *
