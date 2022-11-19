@@ -20,6 +20,8 @@ const App = () => {
         </div>
         <a
           className="text-base text-sky-500 mb-4"
+          rel="noreferrer"
+          target="_blank"
           href="https://github.com/adomaitisc/stfu-group-chat"
         >
           Star it on GitHub
