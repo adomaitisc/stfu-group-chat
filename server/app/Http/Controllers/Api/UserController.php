@@ -17,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        return 'hello';
+        return UserResource::collection(User::all());
     }
 
     // public function getUser(Request $request)
@@ -49,17 +49,13 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request)
+    public function show($id)
     {
-        // $user = $request->user();
-        return response()->json([
-            "status" => "success",
-            "data" => $request
-        ], 200);
-        // $token = $request->bearerToken();
-        // return new UserResource(User::find($token));
-        // get user id from personal_access_token db
-        // $user = User::find($token);
+       $user = User::find($id);
+       return response() -> json([
+           'status' => 'success',
+           'data' => $user
+       ], 200);
     }
 
     /**
@@ -83,6 +79,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // deleting user with id
+        $user = User::find($id);
+        $user->delete();
+        return response()->json([
+            "status" => "success",
+            "message" => "User deleted successfully"
+        ], 200);
+
     }
 }

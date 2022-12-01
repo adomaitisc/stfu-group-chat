@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreGroupRequest extends FormRequest
@@ -29,8 +30,6 @@ class StoreGroupRequest extends FormRequest
             "tag2" => "max:16",
             "tag3" => "max:16",
             "tag4" => "max:16",
-            "creator" => "required",
-            "member_count" => "required|integer"
         ];
     }
 }

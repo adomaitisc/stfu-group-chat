@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGroupRequest;
 use App\Models\Group;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -27,7 +28,11 @@ class GroupController extends Controller
      */
     public function store(StoreGroupRequest $request)
     {
+        // creating a group where the creator is the user who is logged in
         $group = Group::create($request -> all());
+        $group->creator = $request->user()->name;
+        $group->save();
+
         return response()->json([
             "status" => "success",
             "data" => $group
@@ -57,6 +62,11 @@ class GroupController extends Controller
         //Add one to the member count
         $Group->member_count = $Group->member_count + 1;
         $Group->save();
+
+        $user = $request->user();
+        $user->groups()->attach($Group->id);
+        
+
         return response()->json([
             "status" => "success",
             "data" => $Group
@@ -89,13 +99,23 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $Group
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Group $Group)
+    public function destroy(Group $Group, Request $request)
     {
-        // Deleting the group
-        $Group->delete();
-        return response()->json([
-            "status" => "success",
-            "message" => "Group deleted successfully"
-        ], 200);
+        // if this user is the creator of the group then delete the group
+
+
+        if ($Group->creator == $request->user()->name) {
+            $Group->delete();
+            return response()->json([
+                "status" => "success",
+                "data" => "Group deleted"
+            ], 200);
+        }
+        else {
+            return response()->json([
+                "status" => "error",
+                "data" => "You are not the creator of this group"
+            ], 400);
+        }
     }
 }
