@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -37,20 +38,20 @@ class AuthController extends Controller
                     'errors' => $validateUser->errors()
                 ], 401);
             } 
+                $user = User::create([
+                    'name' => $request->input('name'),
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password'))
+                ]);
 
-            $user = User::create([
-                'name' => $request->name,
-                'email' => $request->email,
-                'password' => Hash::make($request->password)
-            ]);
+                $token = $user->createToken('remember_token')->accessToken;
 
-            echo $user;
-
-            return response()->json([
-                'status' => true,
-                'message' => 'User Created Successfully',
-                'token' => $user->createToken("API TOKEN")->plainTextToken
-            ], 200);
+                return response()->json([
+                    'success' => true,
+                    'message' => 'User created successfully',
+                    'user' => $user,
+                    'token' => $token
+                ], 201);
         
         }
         catch (\Throwable $th){
