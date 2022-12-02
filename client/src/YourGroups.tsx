@@ -19,7 +19,9 @@ const YourGroups = ({ setSelected }: { setSelected: any }) => {
     }).then((res) =>
       res.json().then((data) => {
         const groups = data.data;
+        const collectedGroups: GroupType[] = [];
         groups.forEach((relation: any) => {
+          console.log("fetching group", relation.group_id);
           fetch(url + "group/" + relation.group_id, {
             method: "GET",
             headers: {
@@ -28,9 +30,9 @@ const YourGroups = ({ setSelected }: { setSelected: any }) => {
             },
           }).then((res) =>
             res.json().then((data) => {
-              const group = data.data;
-              console.log(group);
-              setGroups((groups) => [...(groups || []), group["0"]]);
+              console.log("fetched group", data.data);
+              if (data.data.length === 0) return;
+              setGroups((groups) => [...(groups || []), data.data["0"]]);
             })
           );
         });
@@ -46,7 +48,7 @@ const YourGroups = ({ setSelected }: { setSelected: any }) => {
             <div
               key={group.id}
               onClick={() => setSelected(group)}
-              className="w-full rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2"
+              className="w-full cursor-pointer rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2"
             >
               <img
                 src={group.image}
@@ -81,9 +83,9 @@ const YourGroups = ({ setSelected }: { setSelected: any }) => {
 };
 
 const CreateModal = ({ isOpen, closeModal }: any) => {
-  const [createdGroupId, setCreatedGroupId] = useState<string>("");
   const [groupData, setGroupData] = useState({
     group_name: "",
+    image: "",
   });
 
   const handleChange = (e: any) => {
@@ -99,15 +101,21 @@ const CreateModal = ({ isOpen, closeModal }: any) => {
       },
       body: JSON.stringify(groupData),
     }).then((res) =>
-      res.json().then((data) => {
-        fetch(url + "group/join/" + data.data.id, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            ...authHeader(),
-          },
-        });
-      })
+      res
+        .json()
+        .then((data) => {
+          console.log("a");
+          fetch(url + "group/join/" + data.data.id, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              ...authHeader(),
+            },
+          });
+        })
+        .then(() => {
+          closeModal();
+        })
     );
   };
 
@@ -129,7 +137,7 @@ const CreateModal = ({ isOpen, closeModal }: any) => {
               <input
                 onChange={(e) => handleChange(e)}
                 className="w-full rounded-xl py-2 px-6 font-light text-lg bg-stone-700 text-stone-200 outline-none placeholder:text-stone-500"
-                id="group_image"
+                id="image"
                 placeholder="Enter Image URL"
               />
             </div>

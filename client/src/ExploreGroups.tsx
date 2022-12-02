@@ -41,10 +41,10 @@ const ExploreGroups = () => {
           <div
             onClick={() => handleJoin(group.id)}
             key={group.id}
-            className="w-full rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2 truncate"
+            className="w-full cursor-pointer rounded-xl flex flex-row justify-start items-center hover:bg-stone-900/60 duration-300 px-2 py-2 truncate"
           >
             <img
-              src="https://source.unsplash.com/random/?mars"
+              src={group.image}
               alt="group image"
               className="w-16 h-16 rounded-lg"
             />

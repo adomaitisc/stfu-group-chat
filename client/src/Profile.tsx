@@ -4,6 +4,8 @@ import { getCurrentUser } from "./services/auth.service";
 
 import { url } from "./services/api";
 
+import { logout } from "./services/auth.service";
+
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profile, setProfile] = useState<any>();
@@ -32,6 +34,11 @@ const Profile = () => {
       })
     );
   }, []);
+
+  const handleLogout = () => {
+    logout();
+    window.location.reload();
+  };
 
   return (
     <div className="w-full">
@@ -68,6 +75,17 @@ const Profile = () => {
           <h1 className="text-xs text-stone-600">
             *this action cannot be undone
           </h1>
+        </div>
+        <div className="mt-8 w-fulll flex flex-col justify-start items-start">
+          <h1 className="text-sm font-normal text-stone-600">Log out</h1>
+          <button
+            onClick={() => {
+              handleLogout();
+            }}
+            className="text-base text-red-600"
+          >
+            Log out
+          </button>
         </div>
         <div className="mt-8 w-fulll flex flex-col justify-start items-start">
           <h1 className="text-sm font-normal text-stone-600">

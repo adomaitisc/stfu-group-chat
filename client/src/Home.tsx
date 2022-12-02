@@ -11,6 +11,7 @@ import authHeader from "./services/auth-header";
 
 type MessageType = {
   id: number;
+  group_id: number;
   message: string;
   name: string;
   created_at: string;
@@ -26,18 +27,6 @@ const Home = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCurrentMessage(e.target.value);
-  };
-
-  const getUserName = () => {
-    let name = "";
-    fetch(url + "user", {
-      headers: authHeader(),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        name = data.data["0"].name;
-      });
-    return name;
   };
 
   const sendMessage = () => {
@@ -63,6 +52,7 @@ const Home = () => {
   }, [user, navigate]);
 
   useEffect(() => {
+    setMessages([]);
     if (selected) {
       fetch(url + "get-message/" + selected.id, {
         method: "GET",
@@ -73,7 +63,10 @@ const Home = () => {
       }).then((res) =>
         res.json().then((data) => {
           for (let i = 0; i < data.data.length; i++) {
-            setMessages((messages) => [...messages, data.data[i]]);
+            // get only the messages with the selected group id
+            if (data.data[i].group_id === selected.id) {
+              setMessages((messages) => [...messages, data.data[i]]);
+            }
           }
         })
       );
@@ -87,7 +80,6 @@ const Home = () => {
     const channel = pusher.subscribe("chat");
     channel.bind("message", (data: any) => {
       data.name = username;
-      console.log(username);
       setMessages([...messages, data]);
     });
     return () => {
@@ -125,28 +117,43 @@ const Home = () => {
             </h1>
           </div>
           <div className="mt-4 bg-stone-900 h-full w-full rounded-3xl py-4">
-            {messages?.map((message) => (
-              <p className="text-stone-300 font-medium  flex gap-2 px-4">
-                {message.name}:
-                <span className="text-stone-400 font-light">
-                  {message.message}
-                </span>
-              </p>
-            ))}
+            {messages &&
+              messages.map((message) => (
+                <p
+                  key={message.id}
+                  className="text-stone-300 font-medium  flex gap-2 px-4"
+                >
+                  {message.name}:
+                  <span className="text-stone-400 font-light">
+                    {message.message}
+                  </span>
+                </p>
+              ))}
           </div>
-          <div className="w-full flex flex-row items-center gap-x-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              sendMessage();
+              setCurrentMessage("");
+              // remove value from input field
+            }}
+            className="w-full flex flex-row items-center gap-x-4"
+          >
             <input
               className="w-full rounded-xl py-2 px-6 font-light text-lg bg-stone-700 text-stone-200 outline-none placeholder:text-stone-400"
               placeholder="Type a Message"
+              value={currentMessage}
+              id="message"
+              autoComplete="off"
               onChange={(e) => handleChange(e)}
             />
             <button
-              onClick={() => sendMessage()}
+              type="submit"
               className="px-4 bg-sky-500 py-2 rounded-xl text-lg"
             >
               Send
             </button>
-          </div>
+          </form>
         </div>
       ) : (
         <div className="w-2/3 h-full flex flex-col items-center justify-center">
