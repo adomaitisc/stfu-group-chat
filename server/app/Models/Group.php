@@ -20,7 +20,7 @@ class Group extends Model
     
     protected $attributes = [
         'creator' => 'admin',
-        'member_count' => 1,
+        'member_count' => 0,
     ];
 
 }
