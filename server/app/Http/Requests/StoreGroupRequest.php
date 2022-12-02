@@ -30,6 +30,7 @@ class StoreGroupRequest extends FormRequest
             "tag2" => "max:16",
             "tag3" => "max:16",
             "tag4" => "max:16",
+            "image" => "required",
         ];
     }
 }

@@ -34,7 +34,7 @@ class UserController extends Controller
     {
         try {
             $token = PersonalAccessToken::findToken($request->bearerToken());
-            $user = $token -> tokenable;
+            $user = $token -> tokenable_id;
             User::where('id', $user)->delete();
             return response()->json([
                 "status" => "success",

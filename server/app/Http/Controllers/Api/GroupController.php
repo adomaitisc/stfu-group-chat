@@ -37,6 +37,7 @@ class GroupController extends Controller
             "data" => $group
         ], 200);
     }
+    
 
     /**
      * Display the specified resource.
@@ -44,9 +45,13 @@ class GroupController extends Controller
      * @param  \App\Models\Group  $Group
      * @return \Illuminate\Http\Response
      */
-    public function show(Group $Group)
+    public function show($id)
     {
-        return json_encode($Group);
+        $group = Group::where('id', $id)->get();
+        return response()->json([
+            "status" => "success",
+            "data" => $group
+        ], 200);
     }
 
     /**
