@@ -1,6 +1,19 @@
 import YourGroups from "./YourGroups";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+
+import { getCurrentUser } from "./services/auth.service";
+import { useEffect } from "react";
 
 const Home = () => {
+  const navigate: NavigateFunction = useNavigate();
+  const user = getCurrentUser();
+
+  useEffect(() => {
+    if (user === undefined) {
+      navigate("/join");
+    }
+  });
+
   return (
     <div className="w-full h-full flex flex-row items-start justify-start">
       <div className="w-1/3 h-full flex flex-col items-start justify-start">

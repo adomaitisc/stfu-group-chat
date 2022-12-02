@@ -1,7 +1,18 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { NavigateFunction, useNavigate } from "react-router-dom";
+import { getCurrentUser } from "./services/auth.service";
 
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const navigate: NavigateFunction = useNavigate();
+  const user = getCurrentUser();
+
+  useEffect(() => {
+    if (user === undefined) {
+      navigate("/join");
+    }
+  });
 
   return (
     <div className="w-full">
