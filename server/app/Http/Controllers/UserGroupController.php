@@ -20,6 +20,14 @@ class UserGroupController extends Controller
         try {
             $token = PersonalAccessToken::findToken($request->bearerToken());
             $user = $token -> tokenable_id;
+            // check if user is already in group
+            $userGroup = UserGroup::where('user_id', $user)->where('group_id', $groupId)->get();
+            if (count($userGroup) > 0) {
+                return response()->json([
+                    "status" => "error",
+                    "data" => "User already in group"
+                ], 500);
+            }
             UserGroup::create([
                 'group_id' => intval($groupId),
                 'user_id' => intval($user)
