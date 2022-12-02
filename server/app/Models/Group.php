@@ -14,12 +14,12 @@ class Group extends Model
         'tag1',
         'tag2',
         'tag3',
-        'tag4'
+        'tag4',
+        'member_count',
     ];
 
     protected $attributes = [
         'creator' => 'admin',
-        'member_count' => 1
     ];
 
 }

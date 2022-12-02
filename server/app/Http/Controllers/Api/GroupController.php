@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreGroupRequest;
 use App\Models\Group;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class GroupController extends Controller
@@ -48,49 +47,6 @@ class GroupController extends Controller
     public function show(Group $Group)
     {
         return json_encode($Group);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Group  $Group
-     * @return \Illuminate\Http\Response
-     */
-    public function updateMemberAdded(Request $request, Group $Group)
-    {
-        //Add one to the member count
-        $Group->member_count = $Group->member_count + 1;
-        $Group->save();
-
-        $user = $request->user();
-        $user->groups()->attach($Group->id);
-        
-
-        return response()->json([
-            "status" => "success",
-            "data" => $Group
-        ], 200);
-    }
-
-    public function updateMemberRemoved(Request $request, Group $Group)
-    {
-        //Remove one from the member count
-        if ($Group->member_count > 0) {
-            $Group->member_count = $Group->member_count - 1;
-            $Group->save();
-            return response()->json([
-                "status" => "success",
-                "data" => $Group
-            ], 200);
-        }
-        else {
-            return response()->json([
-                "status" => "error",
-                "data" => "Member count is already 0"
-            ], 400);
-        }
-        
     }
 
     /**

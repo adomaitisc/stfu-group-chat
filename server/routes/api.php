@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\UserGroupController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // All groups API requests
 Route::apiResource('group', GroupController::class) -> middleware('auth:sanctum');
-// Route::put('group/{group}/member-added', [GroupController::class, 'updateMemberAdded']);
-// Route::put('group/{group}/member-removed', [GroupController::class, 'updateMemberRemoved']);
+Route::post('group/join/{group}', [UserGroupController::class, 'store']) -> middleware('auth:sanctum');
+Route::delete('group/leave/{group}', [UserGroupController::class, 'destroy']) -> middleware('auth:sanctum');
+Route::get('joined', [UserGroupController::class, 'show']) -> middleware('auth:sanctum');
 
 // All user API requests
 Route::apiResource('user', UserController::class) -> middleware('auth:sanctum');
+Route::delete('user', [UserController::class, 'delete']);
 Route::post('auth/register', [AuthController::class, 'createUser']);
 Route::post('auth/login', [AuthController::class, 'loginUser']);
-// Route::get('user', [UserController::class, 'show']);

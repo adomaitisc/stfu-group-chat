@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-
-use App\Http\Resources\UserResource;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Laravel\Sanctum\PersonalAccessToken;
 
 class UserController extends Controller
 {
@@ -15,77 +14,38 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return UserResource::collection(User::all());
-    }
-
-    // public function getUser(Request $request)
-    // {
-        
-    //     $user = $request->user();
-    //     return response()->json([
-    //         "status" => "success",
-    //         "data" => $user
-    //     ], 200);
-    // }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $user = User::create($request->all());
-
-        return new UserResource($user);
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-       $user = User::find($id);
-       return response() -> json([
-           'status' => 'success',
-           'data' => $user
-       ], 200);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //check if the token is valid
-
+        $token = PersonalAccessToken::findToken($request->bearerToken());
+        $user = $token -> tokenable_id;
+        return response()->json([
+            "status" => "success",
+            "data" => User::where('id', $user)->get()
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function delete(Request $request)
     {
-        // deleting user with id
-        $user = User::find($id);
-        $user->delete();
-        return response()->json([
-            "status" => "success",
-            "message" => "User deleted successfully"
-        ], 200);
-
+        try {
+            $token = PersonalAccessToken::findToken($request->bearerToken());
+            $user = $token -> tokenable;
+            User::where('id', $user)->delete();
+            return response()->json([
+                "status" => "success",
+                "data" => "User deleted"
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => "error",
+                "data" => "User not deleted"
+            ], 500);
+        }
     }
+
 }
