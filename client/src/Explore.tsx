@@ -4,6 +4,9 @@ import Search from "./Search";
 import { getCurrentUser } from "./services/auth.service";
 import Trending from "./Trending";
 
+import { url } from "./services/api";
+import authHeader from "./services/auth-header";
+
 const Explore = () => {
   const navigate: NavigateFunction = useNavigate();
   const user = getCurrentUser();
@@ -15,7 +18,7 @@ const Explore = () => {
   });
   return (
     <div className="w-full">
-      <Search />
+      {/* <Search /> */}
       <Trending />
     </div>
   );

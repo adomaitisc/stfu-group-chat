@@ -6,6 +6,19 @@ import Join from "./Join";
 import Navbar from "./Navbar";
 import Profile from "./Profile";
 
+export type GroupType = {
+  id: number;
+  group_name: string;
+  tag1: string | null;
+  tag2: string | null;
+  tag3: string | null;
+  tag4: string | null;
+  creator: string;
+  member_count: number;
+  image: string;
+  created_at: string;
+};
+
 const App = () => {
   return (
     <div className="font-display w-[100vw] h-[100vh] overflow-hidden bg-black flex flex-col justify-start items-center">

@@ -2,17 +2,36 @@ import { useEffect, useState } from "react";
 import { NavigateFunction, useNavigate } from "react-router-dom";
 import { getCurrentUser } from "./services/auth.service";
 
+import { url } from "./services/api";
+
 const Profile = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [profile, setProfile] = useState<any>();
+  const [creationDate, setCreationDate] = useState<any>();
 
   const navigate: NavigateFunction = useNavigate();
   const user = getCurrentUser();
 
   useEffect(() => {
     if (user === undefined) {
-      navigate("/join");
+      navigate("/");
     }
-  });
+
+    fetch(url + "user", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + user,
+      },
+    }).then((res) =>
+      res.json().then((data) => {
+        setProfile(data.data["0"]);
+        const date = new Date(data.data["0"].created_at);
+        const enUSFormatter = new Intl.DateTimeFormat("en-US");
+        setCreationDate(enUSFormatter.format(date));
+      })
+    );
+  }, []);
 
   return (
     <div className="w-full">
@@ -20,15 +39,21 @@ const Profile = () => {
       <div className="pl-4 w-full grid-cols-3 grid ">
         <div className="mt-8 w-fulll flex flex-col justify-start items-start">
           <h1 className="text-sm font-normal text-stone-600">Username</h1>
-          <h1 className="text-base text-stone-300">@adomaitisic</h1>
+          <h1 className="text-base text-stone-300">
+            {profile && profile.name}
+          </h1>
         </div>
         <div className="mt-8 w-fulll flex flex-col justify-start items-start">
           <h1 className="text-sm font-normal text-stone-600">Email</h1>
-          <h1 className="text-base text-stone-300">adomaitisc@wit.edu</h1>
+          <h1 className="text-base text-stone-300">
+            {profile && profile.email}
+          </h1>
         </div>
         <div className="mt-8 w-fulll flex flex-col justify-start items-start">
           <h1 className="text-sm font-normal text-stone-600">Join date</h1>
-          <h1 className="text-base text-stone-300">November 17, 2022</h1>
+          <h1 className="text-base text-stone-300">
+            {creationDate && creationDate}
+          </h1>
         </div>
         <div className="mt-8 w-fulll flex flex-col justify-start items-start">
           <h1 className="text-sm font-normal text-stone-600">Delete account</h1>
@@ -79,6 +104,23 @@ const Profile = () => {
 };
 
 const DeleteModal = ({ isOpen, closeModal }: any) => {
+  const handleDelete = () => {
+    const user = getCurrentUser();
+    console.log(user);
+    fetch(url + "user", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + user,
+      },
+    }).then((res) => {
+      if (res.status === 200) {
+        localStorage.removeItem("token");
+        window.location.reload();
+      }
+    });
+  };
+
   return (
     <>
       {isOpen && (
@@ -91,13 +133,16 @@ const DeleteModal = ({ isOpen, closeModal }: any) => {
               You can always create a new account.
             </h1>
             <div className="mt-8 w-full flex justify-start items-center gap-x-4">
-              <button className="bg-red-900 text-red-500 text-lg font-medium py-1 px-3.5 rounded-lg hover:bg-red-600 hover:text-red-300">
+              <button
+                onClick={() => {
+                  handleDelete();
+                }}
+                className="bg-red-900 text-red-500 text-lg font-medium py-1 px-3.5 rounded-lg hover:bg-red-600 hover:text-red-300"
+              >
                 Delete pls
               </button>
               <button
-                onClick={() => {
-                  closeModal();
-                }}
+                onClick={() => closeModal()}
                 className="text-stone-400 text-lg font-medium py-1 px-3.5 rounded"
               >
                 Cancel
