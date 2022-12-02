@@ -73,6 +73,7 @@ const Join = ({}: {}) => {
             onChange={(e) => handleChange(e)}
             className="w-full rounded-xl py-2 px-6 font-light text-lg bg-stone-700 text-stone-200 outline-none placeholder:text-stone-500"
             id="password"
+            type="password"
             placeholder="Password"
           />
         </div>
