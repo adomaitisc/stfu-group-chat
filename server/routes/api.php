@@ -37,4 +37,4 @@ Route::post('auth/login', [AuthController::class, 'loginUser']);
 
 // All chat API requests
 Route::post('send-message', [ChatController::class, 'sendMessage']) -> middleware('auth:sanctum');
-Route::post('get-message/{group}', [ChatController::class, 'getMessages']) -> middleware('auth:sanctum');
+Route::get('get-message/{group}', [ChatController::class, 'getMessages']) -> middleware('auth:sanctum');
