@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\GroupController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\UserGroupController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,3 +34,7 @@ Route::apiResource('user', UserController::class) -> middleware('auth:sanctum');
 Route::delete('user', [UserController::class, 'delete']);
 Route::post('auth/register', [AuthController::class, 'createUser']);
 Route::post('auth/login', [AuthController::class, 'loginUser']);
+
+// All chat API requests
+Route::post('send-message', [ChatController::class, 'sendMessage']) -> middleware('auth:sanctum');
+Route::post('get-message/{group}', [ChatController::class, 'getMessages']) -> middleware('auth:sanctum');
