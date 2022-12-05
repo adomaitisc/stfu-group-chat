@@ -1,4 +1,4 @@
-const API_URL = "http://216.180.94.76:8085/api/auth/";
+const API_URL = "http://216.180.94.76:8090/api/auth/";
 
 export const register = (name: string, email: string, password: string) => {
   return fetch(API_URL + "register", {
